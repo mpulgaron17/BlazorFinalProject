@@ -1,0 +1,48 @@
+@* EventCard.razor *@
+@using System.ComponentModel.DataAnnotations
+<EditForm Model="EventModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="event-card">
+        <label>Event Name:
+            <InputText @bind-Value="EventModel.EventName" />
+            <ValidationMessage For="@(() => EventModel.EventName)" />
+        </label>
+        <br />
+        <label>Date:
+            <InputDate @bind-Value="EventModel.EventDate" />
+            <ValidationMessage For="@(() => EventModel.EventDate)" />
+        </label>
+        <br />
+        <label>Location:
+            <InputText @bind-Value="EventModel.EventLocation" />
+            <ValidationMessage For="@(() => EventModel.EventLocation)" />
+        </label>
+        <br />
+        <button type="submit">Save</button>
+        <h3>@EventModel.EventName</h3>
+        <p><strong>Date:</strong> @EventModel.EventDate.ToShortDateString()</p>
+        <p><strong>Location:</strong> @EventModel.EventLocation</p>
+    </div>
+</EditForm>
+
+@code {
+    public class EventCardModel
+    {
+        [Required(ErrorMessage = "Event name is required.")]
+        public string EventName { get; set; } = "Sample Event";
+
+        [Required(ErrorMessage = "Event date is required.")]
+        public DateTime EventDate { get; set; } = DateTime.Today.AddDays(7);
+
+        [Required(ErrorMessage = "Event location is required.")]
+        public string EventLocation { get; set; } = "Sample Location";
+    }
+
+    private EventCardModel EventModel = new();
+
+    private void HandleValidSubmit()
+    {
+        // You can add logic here to handle the valid form submission
+    }
+}

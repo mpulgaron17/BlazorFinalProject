@@ -1,0 +1,44 @@
+
+@page "/events"
+@using System.Globalization
+@using BlazorFinalProject.Pages
+
+<h2>Event List</h2>
+
+@foreach (var evt in Events)
+{
+    <div class="event-list-item" @key="evt.Id">
+        <EventCard EventName="@evt.Name" EventDate="@evt.Date" EventLocation="@evt.Location" />
+        <a href="/events/@evt.Id">View Details</a>
+        <a href="/register/@evt.Id">Register</a>
+    </div>
+}
+
+@code {
+    public class EventInfo
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public DateTime Date { get; set; }
+        public string? Location { get; set; }
+    }
+
+    // Static event data service for demo
+    public static class EventDataService
+    {
+        public static readonly List<EventInfo> Events = new()
+        {
+            new EventInfo { Id = 1, Name = "Tech Conference", Date = DateTime.Today.AddDays(10), Location = "New York" },
+            new EventInfo { Id = 2, Name = "Music Festival", Date = DateTime.Today.AddDays(20), Location = "Los Angeles" },
+            new EventInfo { Id = 3, Name = "Art Expo", Date = DateTime.Today.AddDays(30), Location = "Chicago" }
+        };
+    }
+
+    private List<EventInfo> Events = new();
+
+    protected override void OnInitialized()
+    {
+        // Load data once from static service
+        Events = EventDataService.Events;
+    }
+}
